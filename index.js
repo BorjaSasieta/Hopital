@@ -9,12 +9,15 @@ const app = express();
 //configuració de cors
 app.use(cors());
 
+app.use(express.json());
+
 // base de dades
 dbConnection();
 
-const port = 3001;
-
 //Camins
+app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
+
 app.get('/', (request, response) => {
     response.json({ ok: true,
                 msg: "Hola Món"});
