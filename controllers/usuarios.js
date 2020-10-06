@@ -5,11 +5,16 @@ const { generarToken } = require("../helpers/jwt");
 
 
 const getUsuarios = async (request, res = response) => {
-    const usuarios = await Usuario.find({}, 'nombre email google rol');
-
+    const desde = Number(request.query.desde) || 0;
+    const hasta = Number(request.query.hasta) || 5;
+    const [ usuarios, totalRegistres ] = await Promise.all([
+        Usuario.find({}, 'nombre email google rol').skip(desde).limit(hasta),
+        Usuario.estimatedDocumentCount()
+    ]);
     res.json({ ok: true,
                 usuarios,
-                uid: request.uid });
+                uid: request.uid,
+                registros: totalRegistres });
 }
 
 const crearUsuario = async (request, res = response) => {
