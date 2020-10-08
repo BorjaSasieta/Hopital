@@ -72,7 +72,17 @@ const googleSignIn = async (req, res = response) => {
     }
 }
 
+const reNewToken = async (req, res = response) => {
+    const uid = req.uid;
+    const token = await generarToken(uid);
+    res.json({
+        ok: true,
+        token
+    })
+}
+
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    reNewToken
 }
